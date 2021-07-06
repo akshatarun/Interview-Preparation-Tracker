@@ -1,0 +1,61 @@
+<style>
+    .css{
+       font-family:helvetica;
+        text-transform:uppercase;
+        font-weight: bold;
+    }  
+    #footer {
+     position: absolute;
+     bottom: 0;
+     width: 100%;
+                 /* Footer height */
+   }
+   </style>
+   <%- include("./partials/navbar"); %>
+   
+   <div>
+   <% questionbytopic.forEach(questions => { %>
+       <div>
+           <% if(questions.approved) {%>
+          
+           <div class="card" style="height:5rem">
+               <div class="card-body css">
+                   
+                   <%= questions.name %>
+                   <% if(questions.liked.includes(user.id)){ %>
+                    <a href="" class="icon"  id="<%= questions.id %>" style= "text-decoration: none;"><i class="fas fa-star"></i></a>
+                    <% }else{ %>
+                    <a href="" class="icon"  id="<%= questions.id %>" style= "text-decoration: none;"><i class="far fa-star"></i></a>
+                    <% } %>
+                   <div class="float-right"><a href="<%= questions.linkto %>" target="_blank"><button class="btn btn-outline-primary">View Question</button></a></div>
+               </div>
+             </div>
+             <br>
+           <% } %>
+       
+       </div>
+   <%})%>
+   <footer id="footer"><%- include("./partials/footer"); %></footer>
+   </div>
+
+<script>
+    $('.icon').click(function (e) {
+        var id=this.id;
+        e.preventDefault();
+        // console.log(this.data-link);
+        // var href=this.data-link;
+        var href = "/topics/like/"+id
+        $.ajax({
+            url: href,
+            data: {
+            },
+      success: function (response) {
+        if (response.liked) {
+           $("#"+id).html('<i class="fas fa-star"></i>');
+        } else {
+            $("#"+id).html('<i class="far fa-star"></i>');
+        }
+      },
+    });
+    })  
+</script>
